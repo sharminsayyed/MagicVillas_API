@@ -30,4 +30,8 @@ app.Run();
 // make a dto folder and add the villadto file 
 // use that dto in the controller for the httpget
 // create a data folder -> add villastore class which is static -> add the list of villas there -> when returning in the controller use villastore.villalist
-//
+// get all the villas
+// get will by id where we need to ssepcify the id in the http get
+// add the ActionResult and return Ok() and baqdrequest and notfound
+// add the producesresponse type to document the possible status codes that a endpoint will return
+// create a post method to create a new villa usage of [FromBody] to get the data from the body -> use it to create a new villa -> usage of createdatroute 

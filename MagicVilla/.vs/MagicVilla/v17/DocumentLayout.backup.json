@@ -34,9 +34,9 @@
               "Title": "Program.cs",
               "DocumentMoniker": "F:\\Sharmin\\WebApi2\\MagicVilla\\MagicVillaAPI\\Program.cs",
               "RelativeDocumentMoniker": "MagicVillaAPI\\Program.cs",
-              "ToolTip": "F:\\Sharmin\\WebApi2\\MagicVilla\\MagicVillaAPI\\Program.cs",
-              "RelativeToolTip": "MagicVillaAPI\\Program.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAACAAAAACAAAAAAAAAA==",
+              "ToolTip": "F:\\Sharmin\\WebApi2\\MagicVilla\\MagicVillaAPI\\Program.cs*",
+              "RelativeToolTip": "MagicVillaAPI\\Program.cs*",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAAACQAAABfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-07T15:16:17.908Z",
               "IsPinned": true,
@@ -52,8 +52,7 @@
               "RelativeToolTip": "MagicVillaAPI\\Data\\VillaStore.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-07T16:47:32.527Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-07T16:47:32.527Z"
             },
             {
               "$type": "Document",
@@ -65,8 +64,7 @@
               "RelativeToolTip": "MagicVillaAPI\\Model\\Dto\\VillaDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-09-07T16:40:18.215Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-09-07T16:40:18.215Z"
             },
             {
               "$type": "Document",
@@ -74,9 +72,9 @@
               "Title": "VillaAPIController.cs",
               "DocumentMoniker": "F:\\Sharmin\\WebApi2\\MagicVilla\\MagicVillaAPI\\Controllers\\VillaAPIController.cs",
               "RelativeDocumentMoniker": "MagicVillaAPI\\Controllers\\VillaAPIController.cs",
-              "ToolTip": "F:\\Sharmin\\WebApi2\\MagicVilla\\MagicVillaAPI\\Controllers\\VillaAPIController.cs",
-              "RelativeToolTip": "MagicVillaAPI\\Controllers\\VillaAPIController.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAABcAAAAUAAAAAAAAAA==",
+              "ToolTip": "F:\\Sharmin\\WebApi2\\MagicVilla\\MagicVillaAPI\\Controllers\\VillaAPIController.cs*",
+              "RelativeToolTip": "MagicVillaAPI\\Controllers\\VillaAPIController.cs*",
+              "ViewState": "AgIAACAAAAAAAAAAAAAowDQAAABGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-07T15:12:37.209Z",
               "EditorCaption": ""

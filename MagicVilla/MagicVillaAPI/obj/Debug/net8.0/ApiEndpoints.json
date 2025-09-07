@@ -21,16 +21,16 @@
   },
   {
     "ContainingType": "MagicVillaAPI.Controllers.VillaAPIController",
-    "Method": "GetVillaById",
-    "RelativePath": "api/VillaAPI/id",
-    "HttpMethod": "GET",
+    "Method": "createVilla",
+    "RelativePath": "api/VillaAPI",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": false
+        "Name": "villaDTo",
+        "Type": "MagicVillaAPI.Model.Dto.VillaDto",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": [
@@ -42,7 +42,66 @@
           "text/json"
         ],
         "StatusCode": 200
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 500
       }
     ]
+  },
+  {
+    "ContainingType": "MagicVillaAPI.Controllers.VillaAPIController",
+    "Method": "GetVillaById",
+    "RelativePath": "api/VillaAPI/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "MagicVillaAPI.Model.Dto.VillaDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 400
+      },
+      {
+        "Type": "Microsoft.AspNetCore.Mvc.ProblemDetails",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 404
+      }
+    ],
+    "EndpointName": "GetVillaByID"
   }
 ]

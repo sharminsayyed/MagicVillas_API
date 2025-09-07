@@ -33,3 +33,4 @@ F:\Sharmin\WebApi2\MagicVilla\MagicVillaAPI\obj\Debug\net8.0\refint\MagicVillaAP
 F:\Sharmin\WebApi2\MagicVilla\MagicVillaAPI\obj\Debug\net8.0\MagicVillaAPI.pdb
 F:\Sharmin\WebApi2\MagicVilla\MagicVillaAPI\obj\Debug\net8.0\MagicVillaAPI.genruntimeconfig.cache
 F:\Sharmin\WebApi2\MagicVilla\MagicVillaAPI\obj\Debug\net8.0\ref\MagicVillaAPI.dll
+F:\Sharmin\WebApi2\MagicVilla\MagicVillaAPI\obj\Debug\net8.0\MagicVillaAPI.sourcelink.json
