@@ -1,4 +1,7 @@
-﻿namespace MagicVillaAPI.Model.Dto
+﻿using System.ComponentModel.DataAnnotations; // these are used for validation attributes - primary key , not null , foreign key 
+
+
+namespace MagicVillaAPI.Model.Dto
 {
     public class VillaDto
     {
@@ -8,6 +11,9 @@
         //It helps control what data you expose from your models (like your Employee table).
 
         public int Id { get; set; }
+        [Required]
+        [MaxLength(30)]
+        // these validation will work due to api controller
         public string Name { get; set; }
     }
 }

@@ -35,3 +35,7 @@ app.Run();
 // add the ActionResult and return Ok() and baqdrequest and notfound
 // add the producesresponse type to document the possible status codes that a endpoint will return
 // create a post method to create a new villa usage of [FromBody] to get the data from the body -> use it to create a new villa -> usage of createdatroute 
+// add data annotation to the villadto file 
+// we can also add custom error message in the data annotation using modelstate 
+// add a custom validation error using modelstate if the villa name already exists in createvilla method 
+// add the method delete villa 

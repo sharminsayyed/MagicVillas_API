@@ -3,6 +3,7 @@ using MagicVillaAPI.Model;
 using MagicVillaAPI.Model.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace MagicVillaAPI.Controllers
 {
@@ -22,7 +23,7 @@ namespace MagicVillaAPI.Controllers
         }
 
         // get the villa based on the id given 
-        // will return only one set of result   
+        // Name is used for createdatroute 
         [HttpGet("{id:int}" ,Name ="GetVillaByID")]
         // to document the possible status codes that a endpoint will return 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -53,7 +54,18 @@ namespace MagicVillaAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<VillaDto> createVilla([FromBody]VillaDto villaDTo)
         {
-            if(villaDTo == null)
+            // used for cecking the data annotations it used when    [ApiController] this is not enabled
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
+            if(VillaStore.villalist.FirstOrDefault(u => u.Name.ToLower() == villaDTo.Name.ToLower()) != null)
+            {
+                // this means the villa name already exists 
+                ModelState.AddModelError("","Villa already exists!");
+                return BadRequest(ModelState);
+            }
+            if (villaDTo == null)
             {
                 return BadRequest(villaDTo);
             }
@@ -67,10 +79,40 @@ namespace MagicVillaAPI.Controllers
             // the new villa created to the villa store 
             VillaStore.villalist.Add(villaDTo);
 
-            return CreatedAtRoute("GetVillaById",new{id= villaDTo.Id} ,villaDTo);//201
+            //return CreatedAtRoute("GetVillaById",new{id= villaDTo.Id} ,villaDTo);//201
+            //content-type: application/json; charset=utf-8 
+            //date: Sun,07 Sep 2025 19:12:20 GMT
+            //location: https://localhost:7183/api/VillaAPI/3 
+            //server: Kestrel
 
+            return Ok(villaDTo);
 
         }
+
+
+        // to the update the villa information 
+
+        // to delete a villa
+        [HttpDelete("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] 
+        public IActionResult DeleteVilla(int id)
+        {
+            if(id == 0)
+            {
+                return BadRequest();
+            }
+            var villa = VillaStore.villalist.FirstOrDefault(u => u.Id == id);
+            if(villa == null)
+            {
+                return NotFound();
+            }
+            VillaStore.villalist.Remove(villa);
+            return NoContent();
+
+        }
+
 
     }
 }
