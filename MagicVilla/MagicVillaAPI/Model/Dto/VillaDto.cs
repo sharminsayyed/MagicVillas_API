@@ -15,8 +15,12 @@ namespace MagicVillaAPI.Model.Dto
         [MaxLength(30)]
         // these validation will work due to api controller
         public string Name { get; set; }
-
-        public int Occupancy { get; set; }
+        public string Details { get; set; }
+        [Required]
+        public double Rate { get; set; }
         public int Sqft { get; set; }
+        public int Occupancy { get; set; }
+        public string ImageUrl { get; set; }
+        public string Amenity { get; set; }
     }
 }

@@ -1,23 +1,40 @@
+using MagicVillaAPI.Data;
+using MagicVillaAPI.Logging;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// register the serilog
+// database connection 
+builder.Services.AddDbContext<ApplicationDbContext>(option=>
+{
+    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultSQLConnection"));
+});
 
+
+// register the serilog
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
     .WriteTo.File("log/villacatalog.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
-
 builder.Host.UseSerilog();// to use serilog in the project
+
+
 // to return 406 not acceptable if the format is not supported (which is json format)
 builder.Services.AddControllers(option => { option.ReturnHttpNotAcceptable = true; }).
     AddNewtonsoftJson().
     AddXmlDataContractSerializerFormatters(); // to support xml format
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+// registering the Ilogging and Logging class from the logging folder
+builder.Services.AddSingleton<ILogging, Logging>();
+
 
 var app = builder.Build();
 
@@ -62,3 +79,16 @@ app.Run();
 // to the check the logger see the command window in visual studio
 // install serilog.aspnetcore nuget package and serilog.sinks.file
 // register the serilog in the program.cs file
+// check the villacatalog.txt file in the log folder to check all the logs 
+// implemetation of custom logger 
+// create a new folder called Logging -> interface ->ILogging.cs -> implement that in Logging.cs class 
+// we use this Ilogging interface for logging information in controller
+// explicitly define or register services int the container  for Ilogging telling that we have to implement the Logging.cs class 
+// we used logging using ILogger , Serilog , custom logging
+// using database to store villa data (table )
+// install nuget packages Microsoft.EntityFrameworkCore.SqlServer and Microsoft.EntityFrameworkCore.Tools
+// create a new folder called Data -> ApplicationDbContext.cs (this is used to connect to the database)
+// add the connection string in the appsettings.json file
+// in program.cs file register the database context
+// add the dbcontext options in the ApplicationDbContext constructor
+// add the migration in the package manager console

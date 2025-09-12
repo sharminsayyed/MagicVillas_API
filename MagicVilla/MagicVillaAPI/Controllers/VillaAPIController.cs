@@ -1,4 +1,5 @@
 ﻿using MagicVillaAPI.Data;
+using MagicVillaAPI.Logging;
 using MagicVillaAPI.Model;
 using MagicVillaAPI.Model.Dto;
 using Microsoft.AspNetCore.Http;
@@ -15,8 +16,16 @@ namespace MagicVillaAPI.Controllers
     {
         // logger is already configured in the program.cs file
         // implementing the logger in the controller using dependency injection
-        private readonly ILogger<VillaAPIController> _logger;
-        public VillaAPIController(ILogger<VillaAPIController> logger)
+        //private readonly ILogger<VillaAPIController> _logger;
+        //public VillaAPIController(ILogger<VillaAPIController> logger)
+        //{
+        //    _logger = logger;
+        //}
+
+        // using the self implemented logging 
+        private readonly ILogging _logger;
+        // using DI to implement the Ilogging interface 
+        public VillaAPIController(ILogging logger)
         {
             _logger = logger;
         }
@@ -27,7 +36,8 @@ namespace MagicVillaAPI.Controllers
 
         public ActionResult<IEnumerable<VillaDto>> GetVillas()
         {
-            _logger.LogInformation("Getting all villas");
+            //_logger.LogInformation("Getting all villas"); 
+            _logger.Log("Getting all villas","");
             return Ok(VillaStore.villalist);
         }
 
@@ -46,7 +56,8 @@ namespace MagicVillaAPI.Controllers
             if(id == 0)
             {
                 // return a bad request 
-                _logger.LogError("Get villa error with id " + id);
+                //_logger.LogError("Get villa error with id " + id);
+                _logger.Log("Get villa error with id " + id,"error");
                 return BadRequest();// 400
             }
             var villa = VillaStore.villalist.FirstOrDefault(u => u.Id == id);
