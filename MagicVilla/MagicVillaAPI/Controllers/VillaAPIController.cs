@@ -2,6 +2,7 @@
 using MagicVillaAPI.Model;
 using MagicVillaAPI.Model.Dto;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch; // nuget package
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -12,13 +13,21 @@ namespace MagicVillaAPI.Controllers
     [ApiController]
     public class VillaAPIController : ControllerBase
     {
+        // logger is already configured in the program.cs file
+        // implementing the logger in the controller using dependency injection
+        private readonly ILogger<VillaAPIController> _logger;
+        public VillaAPIController(ILogger<VillaAPIController> logger)
+        {
+            _logger = logger;
+        }
         // create an endpoint
         // get - used to get all the villas info
         [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status200OK)] // this is used to when we have to remove undocumented 
 
         public ActionResult<IEnumerable<VillaDto>> GetVillas()
         {
+            _logger.LogInformation("Getting all villas");
             return Ok(VillaStore.villalist);
         }
 
@@ -37,6 +46,7 @@ namespace MagicVillaAPI.Controllers
             if(id == 0)
             {
                 // return a bad request 
+                _logger.LogError("Get villa error with id " + id);
                 return BadRequest();// 400
             }
             var villa = VillaStore.villalist.FirstOrDefault(u => u.Id == id);
@@ -90,7 +100,61 @@ namespace MagicVillaAPI.Controllers
         }
 
 
-        // to the update the villa information 
+        // to the update all properties  the villa  
+        [HttpPut("{id:int}",Name ="updatevilla")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+
+
+        public IActionResult UpdateVilla(int id, [FromBody] VillaDto villadto)
+        {
+            if(villadto == null || id != villadto.Id)
+            {
+                // if the id is not same then it is a bad request
+                // and villa is null then also bad request
+                return BadRequest();
+            }
+            var villa = VillaStore.villalist.FirstOrDefault(u => u.Id == id);
+            //update the values
+            villa.Name = villadto.Name;
+            villa.Occupancy = villadto.Occupancy;
+            villa.Sqft = villadto.Sqft;
+
+            //return NoContent(); // 204 
+            return Ok(villa);
+
+
+        }
+
+        // to update a single property of the villa
+        [HttpPatch("{id:int}", Name = "updatepartialvilla")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+
+        public IActionResult UpdatePartialVilla(int id, JsonPatchDocument<VillaDto> patchdto)
+        {
+            if (patchdto == null || id == 0)
+            {
+                return BadRequest();//400
+            }
+            var villa = VillaStore.villalist.FirstOrDefault(u => u.Id == id);
+            if(villa == null)
+            {
+                return NotFound();//404
+            }
+            patchdto.ApplyTo(villa,ModelState);// apply the changes to the villa object and store errors in model state
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            //return NoContent();//204
+            return Ok(villa); // 200
+
+
+        }
+
+
 
         // to delete a villa
         [HttpDelete("{id:int}")]

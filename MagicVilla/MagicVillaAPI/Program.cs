@@ -1,8 +1,20 @@
+using Serilog;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+// register the serilog
 
-builder.Services.AddControllers();
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug()
+    .WriteTo.File("log/villacatalog.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Host.UseSerilog();// to use serilog in the project
+// to return 406 not acceptable if the format is not supported (which is json format)
+builder.Services.AddControllers(option => { option.ReturnHttpNotAcceptable = true; }).
+    AddNewtonsoftJson().
+    AddXmlDataContractSerializerFormatters(); // to support xml format
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -39,3 +51,14 @@ app.Run();
 // we can also add custom error message in the data annotation using modelstate 
 // add a custom validation error using modelstate if the villa name already exists in createvilla method 
 // add the method delete villa 
+// add the method update villa
+// add extra property in villadto occupancy , and sqft and update the villlastore list
+// inorder to add patch method we need to do nuget packages Microsoft.AspNetCore.JsonPatch Microsoft.AspNetCore.Mvc.NewtonsoftJson
+// add the patch method to update a single property of villa 
+// usage of jasonpatchdocument and look at the jsonpatch replace syntax on web // op ,path , value
+// after that use postman to check all endpoints 
+// add json and xml in the accept header to check the format in program.cs and check using the postman 
+// implementing the logger in the controller using dependency injection
+// to the check the logger see the command window in visual studio
+// install serilog.aspnetcore nuget package and serilog.sinks.file
+// register the serilog in the program.cs file
