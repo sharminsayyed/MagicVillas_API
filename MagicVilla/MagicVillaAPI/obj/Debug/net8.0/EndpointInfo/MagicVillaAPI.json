@@ -608,7 +608,8 @@
       },
       "VillaDto": {
         "required": [
-          "name"
+          "name",
+          "rate"
         ],
         "type": "object",
         "properties": {
@@ -621,13 +622,29 @@
             "minLength": 1,
             "type": "string"
           },
-          "occupancy": {
-            "type": "integer",
-            "format": "int32"
+          "details": {
+            "type": "string",
+            "nullable": true
+          },
+          "rate": {
+            "type": "number",
+            "format": "double"
           },
           "sqft": {
             "type": "integer",
             "format": "int32"
+          },
+          "occupancy": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "imageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "amenity": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false

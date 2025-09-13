@@ -6,12 +6,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch; // nuget package
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 
 namespace MagicVillaAPI.Controllers
 {
     //[Route("api/[controller]")]
     [Route("api/VillaAPI")]
     [ApiController]
+    [Produces("application/json")] // forces JSON as the default response format
     public class VillaAPIController : ControllerBase
     {
         // logger is already configured in the program.cs file
@@ -23,12 +25,19 @@ namespace MagicVillaAPI.Controllers
         //}
 
         // using the self implemented logging 
-        private readonly ILogging _logger;
-        // using DI to implement the Ilogging interface 
-        public VillaAPIController(ILogging logger)
+        //private readonly ILogging _logger;
+        //// using DI to implement the Ilogging interface 
+        //public VillaAPIController(ILogging logger)
+        //{
+        //    _logger = logger;
+        //}
+
+        private readonly ApplicationDbContext _db;
+        public VillaAPIController(ApplicationDbContext db)
         {
-            _logger = logger;
+            _db = db;
         }
+
         // create an endpoint
         // get - used to get all the villas info
         [HttpGet]
@@ -37,8 +46,10 @@ namespace MagicVillaAPI.Controllers
         public ActionResult<IEnumerable<VillaDto>> GetVillas()
         {
             //_logger.LogInformation("Getting all villas"); 
-            _logger.Log("Getting all villas","");
-            return Ok(VillaStore.villalist);
+            //_logger.Log("Getting all villas","");
+            //return Ok(VillaStore.villalist);
+            return Ok(_db.Villas.ToList()); //EFcore
+
         }
 
         // get the villa based on the id given 
@@ -57,11 +68,13 @@ namespace MagicVillaAPI.Controllers
             {
                 // return a bad request 
                 //_logger.LogError("Get villa error with id " + id);
-                _logger.Log("Get villa error with id " + id,"error");
+                //_logger.Log("Get villa error with id " + id,"error");
                 return BadRequest();// 400
             }
-            var villa = VillaStore.villalist.FirstOrDefault(u => u.Id == id);
-            if(villa == null)
+            //var villa = VillaStore.villalist.FirstOrDefault(u => u.Id == id);
+            var villa = _db.Villas.FirstOrDefault(u => u.Id == id);//EFcore
+
+            if (villa == null)
             {
                 return NotFound(); // 404
             }
@@ -80,7 +93,7 @@ namespace MagicVillaAPI.Controllers
             //{
             //    return BadRequest(ModelState);
             //}
-            if(VillaStore.villalist.FirstOrDefault(u => u.Name.ToLower() == villaDTo.Name.ToLower()) != null)
+            if(_db.Villas.FirstOrDefault(u => u.Name.ToLower() == villaDTo.Name.ToLower()) != null)
             {
                 // this means the villa name already exists 
                 ModelState.AddModelError("","Villa already exists!");
@@ -95,10 +108,25 @@ namespace MagicVillaAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
             // here we assign the villa id by getting the max id from the existing list and adding 1 to it
-            villaDTo.Id = VillaStore.villalist.OrderByDescending(u => u.Id).FirstOrDefault().Id + 1;
+            //villaDTo.Id = VillaStore.villalist.OrderByDescending(u => u.Id).FirstOrDefault().Id + 1;
 
             // the new villa created to the villa store 
-            VillaStore.villalist.Add(villaDTo);
+            //VillaStore.villalist.Add(villaDTo);
+
+            //EFcore
+            Villa model = new Villa()
+            {
+                Id = villaDTo.Id,
+                Name = villaDTo.Name,
+                Sqft = villaDTo.Sqft,
+                Occupancy = villaDTo.Occupancy,
+                Rate = villaDTo.Rate,
+                Amenity = villaDTo.Amenity,
+                ImageUrl = villaDTo.ImageUrl,
+                Details = villaDTo.Details
+            };
+            _db.Villas.Add(model);
+            _db.SaveChanges();
 
             //return CreatedAtRoute("GetVillaById",new{id= villaDTo.Id} ,villaDTo);//201
             //content-type: application/json; charset=utf-8 
@@ -106,7 +134,7 @@ namespace MagicVillaAPI.Controllers
             //location: https://localhost:7183/api/VillaAPI/3 
             //server: Kestrel
 
-            return Ok(villaDTo);
+            return Ok(model);
 
         }
 
@@ -126,14 +154,29 @@ namespace MagicVillaAPI.Controllers
                 // and villa is null then also bad request
                 return BadRequest();
             }
-            var villa = VillaStore.villalist.FirstOrDefault(u => u.Id == id);
-            //update the values
-            villa.Name = villadto.Name;
-            villa.Occupancy = villadto.Occupancy;
-            villa.Sqft = villadto.Sqft;
+            //var villa = VillaStore.villalist.FirstOrDefault(u => u.Id == id);
+            ////update the values
+            //villa.Name = villadto.Name;
+            //villa.Occupancy = villadto.Occupancy;
+            //villa.Sqft = villadto.Sqft;
+
+            //EFcore
+            Villa model = new Villa()
+            {
+                Id = villadto.Id,
+                Name = villadto.Name,
+                Sqft = villadto.Sqft,
+                Occupancy = villadto.Occupancy,
+                Rate = villadto.Rate,
+                Amenity = villadto.Amenity,
+                ImageUrl = villadto.ImageUrl,
+                Details = villadto.Details
+            };
+            _db.Villas.Update(model);
+            _db.SaveChanges();
 
             //return NoContent(); // 204 
-            return Ok(villa);
+            return Ok(model);
 
 
         }
@@ -149,18 +192,48 @@ namespace MagicVillaAPI.Controllers
             {
                 return BadRequest();//400
             }
-            var villa = VillaStore.villalist.FirstOrDefault(u => u.Id == id);
-            if(villa == null)
+            //var villa = VillaStore.villalist.FirstOrDefault(u => u.Id == id);
+
+            // Efcore
+            var villa = _db.Villas.AsNoTracking().FirstOrDefault(u => u.Id == id); 
+            VillaDto villadto = new VillaDto()
+            {
+                Id = villa.Id,
+                Name = villa.Name,
+                Sqft = villa.Sqft,
+                Occupancy = villa.Occupancy,
+                Rate = villa.Rate,
+                Amenity = villa.Amenity,
+                ImageUrl = villa.ImageUrl,
+                Details = villa.Details
+            };
+            if (villa == null)
             {
                 return NotFound();//404
             }
-            patchdto.ApplyTo(villa,ModelState);// apply the changes to the villa object and store errors in model state
-            if(!ModelState.IsValid)
+
+            patchdto.ApplyTo(villadto,ModelState);// apply the changes to the villa object and store errors in model state
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            Villa model = new Villa()
+            {
+                Id = villadto.Id,
+                Name = villadto.Name,
+                Sqft = villadto.Sqft,
+                Occupancy = villadto.Occupancy,
+                Rate = villadto.Rate,
+                Amenity = villadto.Amenity,
+                ImageUrl = villadto.ImageUrl,
+                Details = villadto.Details
+            };
+            
+            _db.Villas.Update(model);
+            _db.SaveChanges();
+
             //return NoContent();//204
-            return Ok(villa); // 200
+            return Ok(model); // 200
 
 
         }
@@ -178,12 +251,16 @@ namespace MagicVillaAPI.Controllers
             {
                 return BadRequest();
             }
-            var villa = VillaStore.villalist.FirstOrDefault(u => u.Id == id);
-            if(villa == null)
+            //var villa = VillaStore.villalist.FirstOrDefault(u => u.Id == id);
+            var villa = _db.Villas.FirstOrDefault(u => u.Id == id);
+
+            if (villa == null)
             {
                 return NotFound();
             }
-            VillaStore.villalist.Remove(villa);
+            //EFcore
+            _db.Villas.Remove(villa);
+            _db.SaveChanges();
             return NoContent();
 
         }

@@ -4,6 +4,7 @@ using MagicVillaAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MagicVillaAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250913105628_SeedTheDataInVillaTable")]
+    partial class SeedTheDataInVillaTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -70,7 +73,7 @@ namespace MagicVillaAPI.Migrations
                         {
                             Id = 1,
                             Amenity = "Pool, Wi-Fi, Air Conditioning",
-                            CreatedDate = new DateTime(2025, 9, 13, 16, 30, 38, 584, DateTimeKind.Local).AddTicks(6059),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "A luxurious villa with stunning ocean views, private pool, and modern amenities.",
                             ImageUrl = "https://unsplash.com/photos/white-and-grey-concrete-building-near-swimming-pool-under-clear-sky-during-daytime-2d4lAQAlbDA",
                             Name = "Azure Haven Villa",
@@ -83,7 +86,7 @@ namespace MagicVillaAPI.Migrations
                         {
                             Id = 2,
                             Amenity = "Laundry machine, dryer,Smart TV or entertainment system",
-                            CreatedDate = new DateTime(2025, 9, 13, 16, 30, 38, 584, DateTimeKind.Local).AddTicks(6080),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "A luxurious villa with stunning sunset views, private pool, and modern amenities.",
                             ImageUrl = "https://unsplash.com/photos/white-and-brown-concrete-building-near-swimming-pool-during-daytime-GSL3IuuwJv8",
                             Name = "Sunset Shores Villa",
@@ -96,7 +99,7 @@ namespace MagicVillaAPI.Migrations
                         {
                             Id = 3,
                             Amenity = "Wi-Fi/internet access,Gym or fitness area",
-                            CreatedDate = new DateTime(2025, 9, 13, 16, 30, 38, 584, DateTimeKind.Local).AddTicks(6083),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "A luxurious villa with stunning mountain views, private pool, and modern amenities.",
                             ImageUrl = "https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                             Name = " Mountain Mist Villa",
@@ -109,7 +112,7 @@ namespace MagicVillaAPI.Migrations
                         {
                             Id = 4,
                             Amenity = "Comfortable beds and sofas,Home theater room",
-                            CreatedDate = new DateTime(2025, 9, 13, 16, 30, 38, 584, DateTimeKind.Local).AddTicks(6086),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "A luxurious villa with stunning sunset views, private pool, and modern amenities.",
                             ImageUrl = "https://unsplash.com/photos/a-large-pink-house-with-a-pond-in-front-of-it-S7bDOVuF4R8",
                             Name = " Regal Ridge Villa",
@@ -122,7 +125,7 @@ namespace MagicVillaAPI.Migrations
                         {
                             Id = 5,
                             Amenity = "Fully equipped kitchen,Jacuzzi or hot tub",
-                            CreatedDate = new DateTime(2025, 9, 13, 16, 30, 38, 584, DateTimeKind.Local).AddTicks(6090),
+                            CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Details = "A luxurious villa with private pool, and modern amenities.",
                             ImageUrl = "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
                             Name = " Urban Escape Villa",

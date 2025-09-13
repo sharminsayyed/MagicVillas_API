@@ -26,7 +26,7 @@ builder.Services.AddControllers(option => { option.ReturnHttpNotAcceptable = tru
     AddNewtonsoftJson().
     AddXmlDataContractSerializerFormatters(); // to support xml format
 
-
+//builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -92,3 +92,7 @@ app.Run();
 // in program.cs file register the database context
 // add the dbcontext options in the ApplicationDbContext constructor
 // add the migration in the package manager console
+// we can seed the data in the database using onmodelcreating method in the ApplicationDbContext class
+// again add migrationa and update database 
+// use database and efcore and applicationDbContext in the controller and make changes 
+// patch method we did some changes like AskNoTracking() as we dont the efcore to get confused 
