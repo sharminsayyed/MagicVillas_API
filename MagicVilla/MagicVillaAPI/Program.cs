@@ -53,9 +53,9 @@ app.MapControllers();
 
 app.Run();
 
-
-// step 1 - create a controller in the controller folder 
-//step 2 - create a model folder add a class(table ) in it 
+// steps 
+//create a controller in the controller folder 
+// create a model folder add a class(table ) in it 
 // make a dto folder and add the villadto file 
 // use that dto in the controller for the httpget
 // create a data folder -> add villastore class which is static -> add the list of villas there -> when returning in the controller use villastore.villalist
@@ -96,3 +96,5 @@ app.Run();
 // again add migrationa and update database 
 // use database and efcore and applicationDbContext in the controller and make changes 
 // patch method we did some changes like AskNoTracking() as we dont the efcore to get confused 
+// add [Produces("application/json")]  to get json data only in the controller 
+
