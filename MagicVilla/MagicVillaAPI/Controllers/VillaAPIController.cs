@@ -3,7 +3,6 @@ using MagicVillaAPI.Logging;
 using MagicVillaAPI.Model;
 using MagicVillaAPI.Model.Dto;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.JsonPatch; // nuget package
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
@@ -16,27 +15,19 @@ namespace MagicVillaAPI.Controllers
     [Produces("application/json")] // forces JSON as the default response format
     public class VillaAPIController : ControllerBase
     {
-        // logger is already configured in the program.cs file
-        // implementing the logger in the controller using dependency injection
-        //private readonly ILogger<VillaAPIController> _logger;
-        //public VillaAPIController(ILogger<VillaAPIController> logger)
-        //{
-        //    _logger = logger;
-        //}
+        
 
         // using the self implemented logging 
-        //private readonly ILogging _logger;
-        //// using DI to implement the Ilogging interface 
-        //public VillaAPIController(ILogging logger)
-        //{
-        //    _logger = logger;
-        //}
-
+        private readonly ILogging _logger;
         private readonly ApplicationDbContext _db;
-        public VillaAPIController(ApplicationDbContext db)
+        //// using DI to implement the Ilogging interface 
+        public VillaAPIController(ILogging logger, ApplicationDbContext db)
         {
             _db = db;
+            _logger = logger;
         }
+
+        
 
         // create an endpoint
         // get - used to get all the villas info
@@ -47,14 +38,14 @@ namespace MagicVillaAPI.Controllers
         {
             //_logger.LogInformation("Getting all villas"); 
             //_logger.Log("Getting all villas","");
-            //return Ok(VillaStore.villalist);
+            
             return Ok(_db.Villas.ToList()); //EFcore
 
         }
 
         // get the villa based on the id given 
-        // Name is used for createdatroute 
-        [HttpGet("{id:int}" ,Name ="GetVillaByID")]
+       
+        [HttpGet("{id:int}" )]
         // to document the possible status codes that a endpoint will return 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -111,7 +102,7 @@ namespace MagicVillaAPI.Controllers
             //villaDTo.Id = VillaStore.villalist.OrderByDescending(u => u.Id).FirstOrDefault().Id + 1;
 
             // the new villa created to the villa store 
-            //VillaStore.villalist.Add(villaDTo);
+            
 
             //EFcore
             Villa model = new Villa()
@@ -128,11 +119,7 @@ namespace MagicVillaAPI.Controllers
             _db.Villas.Add(model);
             _db.SaveChanges();
 
-            //return CreatedAtRoute("GetVillaById",new{id= villaDTo.Id} ,villaDTo);//201
-            //content-type: application/json; charset=utf-8 
-            //date: Sun,07 Sep 2025 19:12:20 GMT
-            //location: https://localhost:7183/api/VillaAPI/3 
-            //server: Kestrel
+            
 
             return Ok(model);
 
@@ -140,7 +127,7 @@ namespace MagicVillaAPI.Controllers
 
 
         // to the update all properties  the villa  
-        [HttpPut("{id:int}",Name ="updatevilla")]
+        [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -154,12 +141,7 @@ namespace MagicVillaAPI.Controllers
                 // and villa is null then also bad request
                 return BadRequest();
             }
-            //var villa = VillaStore.villalist.FirstOrDefault(u => u.Id == id);
-            ////update the values
-            //villa.Name = villadto.Name;
-            //villa.Occupancy = villadto.Occupancy;
-            //villa.Sqft = villadto.Sqft;
-
+            
             //EFcore
             Villa model = new Villa()
             {
@@ -181,62 +163,62 @@ namespace MagicVillaAPI.Controllers
 
         }
 
-        // to update a single property of the villa
-        [HttpPatch("{id:int}", Name = "updatepartialvilla")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        //// to update a single property of the villa
+        //[HttpPatch("{id:int}", Name = "updatepartialvilla")]
+        //[ProducesResponseType(StatusCodes.Status204NoContent)]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
 
-        public IActionResult UpdatePartialVilla(int id, JsonPatchDocument<VillaDto> patchdto)
-        {
-            if (patchdto == null || id == 0)
-            {
-                return BadRequest();//400
-            }
-            //var villa = VillaStore.villalist.FirstOrDefault(u => u.Id == id);
+        //public IActionResult UpdatePartialVilla(int id, JsonPatchDocument<VillaDto> patchdto)
+        //{
+        //    if (patchdto == null || id == 0)
+        //    {
+        //        return BadRequest();//400
+        //    }
+        //    //var villa = VillaStore.villalist.FirstOrDefault(u => u.Id == id);
 
-            // Efcore
-            var villa = _db.Villas.AsNoTracking().FirstOrDefault(u => u.Id == id); 
-            VillaDto villadto = new VillaDto()
-            {
-                Id = villa.Id,
-                Name = villa.Name,
-                Sqft = villa.Sqft,
-                Occupancy = villa.Occupancy,
-                Rate = villa.Rate,
-                Amenity = villa.Amenity,
-                ImageUrl = villa.ImageUrl,
-                Details = villa.Details
-            };
-            if (villa == null)
-            {
-                return NotFound();//404
-            }
+        //    // Efcore
+        //    var villa = _db.Villas.AsNoTracking().FirstOrDefault(u => u.Id == id); 
+        //    VillaDto villadto = new VillaDto()
+        //    {
+        //        Id = villa.Id,
+        //        Name = villa.Name,
+        //        Sqft = villa.Sqft,
+        //        Occupancy = villa.Occupancy,
+        //        Rate = villa.Rate,
+        //        Amenity = villa.Amenity,
+        //        ImageUrl = villa.ImageUrl,
+        //        Details = villa.Details
+        //    };
+        //    if (villa == null)
+        //    {
+        //        return NotFound();//404
+        //    }
 
-            patchdto.ApplyTo(villadto,ModelState);// apply the changes to the villa object and store errors in model state
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            Villa model = new Villa()
-            {
-                Id = villadto.Id,
-                Name = villadto.Name,
-                Sqft = villadto.Sqft,
-                Occupancy = villadto.Occupancy,
-                Rate = villadto.Rate,
-                Amenity = villadto.Amenity,
-                ImageUrl = villadto.ImageUrl,
-                Details = villadto.Details
-            };
+        //    patchdto.ApplyTo(villadto,ModelState);// apply the changes to the villa object and store errors in model state
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
+        //    Villa model = new Villa()
+        //    {
+        //        Id = villadto.Id,
+        //        Name = villadto.Name,
+        //        Sqft = villadto.Sqft,
+        //        Occupancy = villadto.Occupancy,
+        //        Rate = villadto.Rate,
+        //        Amenity = villadto.Amenity,
+        //        ImageUrl = villadto.ImageUrl,
+        //        Details = villadto.Details
+        //    };
             
-            _db.Villas.Update(model);
-            _db.SaveChanges();
+        //    _db.Villas.Update(model);
+        //    _db.SaveChanges();
 
-            //return NoContent();//204
-            return Ok(model); // 200
+        //    //return NoContent();//204
+        //    return Ok(model); // 200
 
 
-        }
+        //}
 
 
 

@@ -13,24 +13,11 @@ builder.Services.AddDbContext<ApplicationDbContext>(option=>
 });
 
 
-// register the serilog
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Debug()
-    .WriteTo.File("log/villacatalog.txt", rollingInterval: RollingInterval.Day)
-    .CreateLogger();
-builder.Host.UseSerilog();// to use serilog in the project
-
-
-// to return 406 not acceptable if the format is not supported (which is json format)
-builder.Services.AddControllers(option => { option.ReturnHttpNotAcceptable = true; }).
-    AddNewtonsoftJson().
-    AddXmlDataContractSerializerFormatters(); // to support xml format
-
-//builder.Services.AddControllers();
+builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddAuthorization();
 
 // registering the Ilogging and Logging class from the logging folder
 builder.Services.AddSingleton<ILogging, Logging>();
